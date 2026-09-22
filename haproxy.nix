@@ -39,9 +39,9 @@
             # HTTP :80
             # Pas de redirection vers HTTPS
 
-            frontend http
-                bind :80
-                default_backend podman_app
+#            frontend http
+ #               bind :80
+  #              default_backend podman_app
 
             # HTTPS :443
             # HTTP/2 + HTTP/1.1

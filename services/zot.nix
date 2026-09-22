@@ -38,7 +38,6 @@
       };
     };
 
-    # Access control
     accessControl = {
       adminActions = [
         "read"
@@ -65,7 +64,6 @@
       };
     };
 
-    # Retention — keep things tidy
     retention = {
       dryRun = false;
       delay = "24h";
@@ -94,9 +92,8 @@
       };
     };
 
-    # Monitoring — local Prometheus and Grafana
-    metrics.enable = true;
-    enableLocalScraping = true;
-    grafanaDashboard = true;
+    #metrics.enable = true;
+    #enableLocalScraping = true;
+    #grafanaDashboard = true;
   };
 }

@@ -3,16 +3,16 @@
   sops.defaultSopsFile = ../secrets/zot.yaml;
   sops.secrets = {
     zot_admin_password = {
-    owner = "zot";
-    group = "zot";
-    mode = "0400";
-  };
+      owner = "zot";
+      group = "zot";
+      mode = "0400";
+    };
 
-  zot_ci_password = {
-    owner = "zot";
-    group = "zot";
-    mode = "0400";
-  };
+    zot_ci_password = {
+      owner = "zot";
+      group = "zot";
+      mode = "0400";
+    };
   };
 
   services.zot = {
@@ -40,14 +40,24 @@
 
     # Access control
     accessControl = {
-      adminActions = [ "read" "create" "update" "delete" ];
+      adminActions = [
+        "read"
+        "create"
+        "update"
+        "delete"
+      ];
       defaultPolicy = [ ];
       anonymousPolicy = [ ];
       repositories."drotek/**" = {
         policies = [
           {
             users = [ "ci-user" ];
-            actions = [ "read" "create" "update" "delete" ];
+            actions = [
+              "read"
+              "create"
+              "update"
+              "delete"
+            ];
           }
         ];
         defaultPolicy = [ ];
@@ -68,7 +78,10 @@
             { patterns = [ "latest" ]; }
             { pushedWithin = "168h"; }
             { mostRecentlyPushedCount = 10; }
-            { patterns = [ "v.*" ]; pulledWithin = "720h"; }
+            {
+              patterns = [ "v.*" ];
+              pulledWithin = "720h";
+            }
           ];
         }
       ];

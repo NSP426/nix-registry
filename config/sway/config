@@ -1,0 +1,284 @@
+# ~/.config/sway/config
+
+### Variables
+
+include /etc/sway/config-vars.d/*
+
+set $mod Mod4
+
+set $left Left
+set $down Down
+set $up Up
+set $right Right
+
+default_border pixel 2
+client.focused "#9f1209" "#9f1209" "#ffffff" "#9f1209"
+
+# Drag floating windows by holding down $mod and left mouse button.
+# Resize them with right mouse button + $mod.
+# Despite the name, also works for non-floating windows.
+# Change normal to inverse to use left mouse button for resizing and right
+# mouse button for dragging.
+floating_modifier $mod normal
+
+# Kill focused window
+bindsym $mod+Shift+q kill
+
+# Reload the configuration file
+bindsym $mod+Shift+c reload
+
+# Your preferred application launcher
+# Note: pass the final command to swaymsg so that the resulting window can be opened
+# on the original workspace that the command was run on.
+set $menu dmenu_path | wofi --show drun -i | xargs swaymsg exec --
+#set $menu tofi-run | xargs swaymsg exec --
+bindsym $mod+d exec $menu
+
+# Exit sway (logs you out of your Wayland session)
+set $main_modes "exit: [s]uspend [l]ogout, [r]eboot, [h]alt"
+mode $main_modes {
+  bindsym l exec swaymsg exit
+  bindsym r exec systemctl reboot
+  bindsym s exec systemctl suspend
+  bindsym h exec systemctl poweroff
+  bindsym Escape mode "default"
+  bindsym Return mode "default"
+}
+bindsym $mod+Shift+e mode $main_modes
+
+# Moving around:
+
+# Move your focus around
+bindsym $mod+$left focus left
+bindsym $mod+$down focus down
+bindsym $mod+$up focus up
+bindsym $mod+$right focus right
+
+# Move the focused window with the same, but add Shift
+bindsym $mod+Shift+$left move left
+bindsym $mod+Shift+$down move down
+bindsym $mod+Shift+$up move up
+bindsym $mod+Shift+$right move right
+
+# Layout stuff:
+#
+# You can "split" the current object of your focus with
+# $mod+b or $mod+v, for horizontal and vertical splits
+# respectively.
+bindsym $mod+h splith
+bindsym $mod+v splitv
+
+# Make the current focus fullscreen
+bindsym $mod+f fullscreen
+
+# Switch the current container between different layout styles
+bindsym $mod+s layout stacking
+bindsym $mod+z layout tabbed
+bindsym $mod+e layout toggle split
+
+# Toggle the current focus between tiling and floating mode
+bindsym $mod+Shift+space floating toggle
+
+# Swap focus between the tiling area and the floating area
+bindsym $mod+space focus mode_toggle
+
+# Move focus to the parent container
+bindsym $mod+a focus parent
+
+#
+# Workspaces:
+#
+# Switch to workspace
+bindsym $mod+ampersand workspace number 1
+bindsym $mod+eacute workspace number 2
+bindsym $mod+quotedbl workspace number 3
+bindsym $mod+apostrophe workspace number 4
+bindsym $mod+parenleft workspace number 5
+bindsym $mod+minus workspace number 6
+bindsym $mod+egrave workspace number 7
+bindsym $mod+underscore workspace number 8
+bindsym $mod+ccedilla workspace number 9
+bindsym $mod+agrave workspace number 10
+
+#~ # Move focused container to workspace
+bindsym $mod+Shift+ampersand move container to workspace number 1
+bindsym $mod+Shift+eacute move container to workspace number 2
+bindsym $mod+Shift+quotedbl move container to workspace number 3
+bindsym $mod+Shift+apostrophe move container to workspace number 4
+bindsym $mod+Shift+parenleft move container to workspace number 5
+bindsym $mod+Shift+minus move container to workspace number 6
+bindsym $mod+Shift+egrave move container to workspace number 7
+bindsym $mod+Shift+underscore move container to workspace number 8
+bindsym $mod+Shift+ccedilla move container to workspace number 9
+bindsym $mod+Shift+agrave move container to workspace number 10
+# Note: workspaces can have any name you want, not just numbers.
+# We just use 1-10 as the default.
+
+# Move the currently focused window to the scratchpad
+bindsym $mod+Shift+equal move scratchpad
+bindsym $mod+equal scratchpad show
+
+# Resizing containers:
+#
+mode "resize" {
+    bindsym $left resize shrink width 10px
+    bindsym $down resize grow height 10px
+    bindsym $up resize shrink height 10px
+    bindsym $right resize grow width 10px
+
+    # Return to default mode
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
+
+### Output configuration
+# You can get the names of your outputs by running: swaymsg -t get_outputs
+#output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
+#output DP-4 scale 2 res 1920x1080
+
+### Input configuration
+#
+# You can get the names of your inputs by running: swaymsg -t get_inputs
+input "type:keyboard" {
+    xkb_layout "fr,us"
+}
+
+input "type:touchpad" {
+    tap enabled
+}
+
+input "type:mouse" {
+    pointer_accel 0.5
+}
+
+#
+# Status Bar:
+#
+# Read `man 5 sway-bar` for more information about this section.
+bar {
+    swaybar_command waybar
+}
+
+# Add title info for xwayland usage by app
+for_window [shell="xwayland"] title_format "[XW] %title"
+
+#
+# Applications section
+#
+
+# Idle configuration
+exec ~/.config/sway/scripts/lock.sh
+bindsym $mod+Escape exec ~/.config/sway/scripts/lock_now.sh 
+
+# wl notifier
+#exec mako -c ~/.config/mako/config
+exec swaync
+
+# Toggle control center
+bindsym $mod+Shift+n exec swaync-client -t -sw
+
+# scratch pad
+for_window [app_id="gnome-calculator"] move scratchpad;
+for_window [window_type="dialog"] focus;
+
+# clipboard
+exec wl-paste -t text --watch clipman store
+
+# Audio sink
+set $sink_mute wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+set $sink_down wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+set $sink_up wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
+
+exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%
+
+bindsym --locked $mod+F1 exec $sink_mute
+bindsym --locked $mod+F2 exec $sink_down
+bindsym --locked $mod+F3 exec $sink_up
+bindsym --locked XF86AudioMute exec $sink_mute
+bindsym --locked XF86AudioLowerVolume exec $sink_down
+bindsym --locked XF86AudioRaiseVolume exec $sink_up
+
+## Screenshots to file
+set $screenshot_path "$HOME/Images/Screenshots/$(date +%Y%m%d_%H%M).png"
+bindsym Print exec grimshot --notify save screen $screenshot_path
+bindsym $mod+Print exec grimshot --notify save active $screenshot_path
+bindsym Shift+Print exec grimshot --notify save area $screenshot_path
+
+## Screenshot to Clipboard
+bindsym Ctrl+Print exec grimshot --notify copy screen
+bindsym Ctrl+$mod+Print exec grimshot --notify copy active
+bindsym Ctrl+Shift+Print exec grimshot --notify copy area
+
+# Audio source
+set $source_mute wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
+
+exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ 1
+
+bindsym $mod+F4 exec $source_mute
+bindsym XF86AudioMicMute exec $source_mute
+
+# Screen
+bindsym $mod+shift+F7 exec wdisplays
+#bindsym $mod+shift+F1 exec swaymsg 'output eDP-1 enable' && swaymsg 'output DP-4 disable'
+#bindsym $mod+shift+F2 exec swaymsg 'output DP-4 enable' && swaymsg 'output eDP-1 disable'
+
+# Backlight
+exec brightnessctl -s 50%
+bindsym XF86MonBrightnessDown exec brightnessctl s 5%-
+bindsym XF86MonBrightnessUp exec brightnessctl s +5%
+exec gammastep -c ~/.config/gammastep/wayland.config
+
+# Music player
+for_window [instance="audacious"] move workspace 3
+for_window [app_id="audacious"] move workspace 3
+exec audacious
+
+set $playpause audtool --playback-playpause
+set $playprev audtool --playlist-reverse
+set $playnext audtool --playlist-advance
+
+bindsym --locked $mod+F5 exec $playpause
+bindsym --locked $mod+F6 exec $playprev
+bindsym --locked $mod+F7 exec $playnext
+bindsym --locked XF86AudioPlay exec $playpause
+bindsym --locked XF86AudioPrev exec $playprev
+bindsym --locked XF86AudioNext exec $playnext
+
+# bluetooth manager
+for_window [app_id="blueman-manager"] move scratchpad
+exec blueman-manager
+
+# Nextcloud
+exec nextcloud --platform xcb
+bindsym $mod+n exec nextcloud --platform xcb
+
+# Email
+for_window [app_id="thunderbird"] move workspace 4
+exec thunderbird
+
+for_window [app_id="org.gnome.Evolution"] move workspace 4
+#exec evolution
+
+# WWW
+exec firefox
+for_window [app_id="firefox"] move workspace 2
+for_window [instance="chromium"] move workspace 2
+for_window [app_id="midori"] move workspace 2
+
+# terminal
+#exec /bin/footclient --server-socket=~/.cache/foot-server.sock
+#bindsym $mod+Return exec /bin/footclient --server-socket=~/.cache/foot-server.sock
+exec foot
+bindsym $mod+Return exec foot
+
+# Network Manager
+exec nm-applet --indicator
+
+# Screen Pause
+bindsym $mod+shift+p exec ~/.config/i3/pomeaudo_start.sh 20
+
+# File manager
+bindsym $mod+T exec nemo
+
+include /etc/sway/config.d/*

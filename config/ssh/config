@@ -1,0 +1,14 @@
+Host *
+   AddKeysToAgent yes
+   Compression yes
+   ForwardAgent no
+#    ControlMaster auto
+#    ControlPersist 1h
+#    ControlPath /tmp/socket-%r@%h:%p
+
+Include config.d/*
+
+Host ma-iot-chirpstack
+    HostName 46.182.212.62
+    User supplier_operametrix
+    Port 2237

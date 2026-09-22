@@ -1,0 +1,93 @@
+function ssht() {
+   infocmp | ssh $@ 'tic -'
+}
+
+function gtree() {
+    git log --oneline --abbrev-commit --all --graph --decorate --color
+}
+
+ocd_flash() {
+    SCRIPTS=/usr/share/openocd/scripts/
+    INTERFACE="${SCRIPTS}/interface/$1.cfg"
+    TARGET="${SCRIPTS}/target/$2.cfg" 
+
+    openocd -f $INTERFACE -f $TARGET -c init -c "reset init" -c halt -c "program $3 verify" -c reset -c exit
+}
+
+ocd_erase() {
+    SCRIPTS=/usr/share/openocd/scripts/
+    INTERFACE="${SCRIPTS}/interface/$1.cfg"
+    TARGET="${SCRIPTS}/target/$2.cfg" 
+
+    openocd -f $INTERFACE -f $TARGET -c init -c "reset init" -c halt -c "nrf5 mass_erase" -c reset -c exit
+}
+
+dirmod () {
+    find "$1" -type d -exec chmod "$2" {} \;
+}
+
+filemod () {
+    find "$1" -type f -exec chmod "$2" {} \;
+}
+
+get_idf () {
+   . $HOME/Projets/esp/esp-idf/export.sh
+}
+
+swodebug () {
+   $HOME/Projets/stm/SWO-Parser/swo_parser.py
+}
+
+canup() {
+   sudo ip link set can0 type can bitrate 1000000 restart-ms 100
+   sudo ip link set up can0
+}
+
+vcanup() {
+   sudo ip link add dev vcan0 type vcan
+   sudo ip link set up vcan0
+   sudo ip link add dev vcan1 type vcan
+   sudo ip link set up vcan1
+}
+
+slcanup() {
+   sudo slcand -o -s8 /dev/ttyACM0
+   sudo ip link set up slcan0
+}
+
+slcandown() {
+   sudo slcand -c /dev/ttyACM0
+   sudo ip link set down slcan0
+   sudo pkill slcand
+}
+
+tinc-map () {
+   dot -Tsvg -o /tmp/$1.svg /tmp/tinc-$1
+}
+
+forti-lhyfe () {
+   SVPNCOOKIE=""
+   vared -p 'What is your cookie: ' -c SVPNCOOKIE
+   sudo openfortivpn accessvpn.lhyfe.com:443 --cookie="SVPNCOOKIE=$SVPNCOOKIE" --trusted-cert ca0d2ee70e5168940c875cdca3d59dc0d1bd2258b716b8c0edb1429a2111fe71
+}
+
+forti-test () {
+   pkill -f forti_notify
+   zsh -c "exec -a forti_notify ~/.config/i3/pomeaudo.sh 5 &"
+   echo "forti"
+}
+
+dlv_arte () {
+   DEST_DIR="${HOME}/Vidéos"
+   VENV_DIR="${HOME}/venv_yt"
+
+   if [[ "$VIRTUAL_ENV" != "${VENV_DIR}" ]]
+   then
+      source "${VENV_DIR}/bin/activate"
+   fi
+
+   yt-dlp --list-formats "${1}" \
+     && vared -p 'Which item(s): ' -c ITEMS \
+     && yt-dlp --no-warnings --cookies-from-browser firefox -P "${DEST_DIR}" -f "${ITEMS}" "${1}" \
+     && yt-dlp --no-warnings --cookies-from-browser firefox -P "${DEST_DIR}" --sub-format "srt" --sub-langs fr --write-subs "${1}"
+}

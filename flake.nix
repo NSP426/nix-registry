@@ -10,7 +10,7 @@
     };
 
     sops-nix.url = "github:Mic92/sops-nix";
-    nur-packages.url = "github:ijohanne/nur-packages";
+#    nur-packages.url = "github:ijohanne/nur-packages";
   };
 
   outputs =
@@ -19,7 +19,7 @@
       nixpkgs,
       home-manager,
       sops-nix,
-      nur-packages,
+#      nur-packages,
       ...
     }:
     let
@@ -34,8 +34,8 @@
         modules = [
           ./hardware-configuration.nix
           sops-nix.nixosModules.sops
-          nur-packages.nixosModules.zot
-          ./services/zot.nix
+#          nur-packages.nixosModules.zot
+#          ./services/zot.nix
 
           home-manager.nixosModules.home-manager
           {
@@ -235,6 +235,19 @@
             #virtualisation.docker.enable = true;
             #virtualisation.virtualbox.host.enable = true;
 
+            virtualisation.containers.enable = true;
+  virtualisation = {
+    podman = {
+      enable = true;
+
+      # Create a `docker` alias for podman, to use it as a drop-in replacement
+      dockerCompat = true;
+
+      # Required for containers under podman-compose to be able to talk to each other.
+      defaultNetwork.settings.dns_enabled = true;
+    };
+  };
+
             ############################################################
             # USERS
             ############################################################
@@ -417,6 +430,9 @@
               # nix secret
               age
               sops
+
+              podman-tui
+              podman-compose
             ];
 
             ############################################################

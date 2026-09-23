@@ -99,13 +99,25 @@
             ############################################################
 
             networking.hostName = "cachos";
-            networking.networkmanager.enable = true;
+            #networking.networkmanager.enable = true;
 
             networking.firewall.enable = false;
 
             networking.firewall.allowedTCPPorts = [
               22
             ];
+
+            networking.interfaces.enp1s0 = {                                    
+              useDHCP = true;                                                   
+            };
+
+            networking.interfaces.enp2s0 = {                                    
+              useDHCP = true;                                                   
+            };          
+ 
+            networking.interfaces.enp3s0 = {                                    
+              useDHCP = true;                                                   
+            };        
 
             ############################################################
             # LOCALE / KEYBOARD

@@ -11,6 +11,11 @@
 
     sops-nix.url = "github:Mic92/sops-nix";
     #    nur-packages.url = "github:ijohanne/nur-packages";
+
+    netboot = {
+      url = "path:./netboot";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -19,6 +24,7 @@
       nixpkgs,
       home-manager,
       sops-nix,
+      netboot,
       #      nur-packages,
       ...
     }:
@@ -48,7 +54,32 @@
             # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
           }
 
+          # netboot.nixosModules.netboot
+          # {
+          #   services.netboot = {
+          #     enable = true;
+          #
+          #     interface = "enp3s0";
+          #
+          #     # Existing DHCP server's network.
+          #     subnet = "10.10.0.0";
+          #
+          #     root = "/srv/netboot";
+          #
+          #     httpPort = 8080;
+          #   };
+          # }
+          #
+          ./vaultwarden/vaultwarden.nix
+
           ({ config, pkgs, ... }: {
+
+            services.vaultwarden-custom = {
+              enable = true;
+
+              domain = "https://vault.example.com";
+              port = 8222;
+            };
 
             ############################################################
             # SYSTEM
@@ -107,17 +138,17 @@
               22
             ];
 
-            networking.interfaces.enp1s0 = {                                    
-              useDHCP = true;                                                   
+            networking.interfaces.enp1s0 = {
+              useDHCP = true;
             };
 
-            networking.interfaces.enp2s0 = {                                    
-              useDHCP = true;                                                   
-            };          
- 
-            networking.interfaces.enp3s0 = {                                    
-              useDHCP = true;                                                   
-            };        
+            networking.interfaces.enp2s0 = {
+              useDHCP = true;
+            };
+
+            networking.interfaces.enp3s0 = {
+              useDHCP = true;
+            };
 
             ############################################################
             # LOCALE / KEYBOARD

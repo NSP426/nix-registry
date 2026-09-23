@@ -21,6 +21,17 @@
         "type": "github"
       }
     },
+    "netboot": {
+      "locked": {
+        "path": "./netboot",
+        "type": "path"
+      },
+      "original": {
+        "path": "./netboot",
+        "type": "path"
+      },
+      "parent": []
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1789998861,
@@ -56,6 +67,7 @@
     "root": {
       "inputs": {
         "home-manager": "home-manager",
+        "netboot": "netboot",
         "nixpkgs": "nixpkgs",
         "sops-nix": "sops-nix"
       }

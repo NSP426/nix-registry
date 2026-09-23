@@ -43,6 +43,7 @@
           #          nur-packages.nixosModules.zot
           #          ./services/zot.nix
           ./haproxy.nix
+          ./supervision.nix
 
           home-manager.nixosModules.home-manager
           {
@@ -347,6 +348,7 @@
               multitail
               ack
               lm_sensors
+              htop
 
               ##########################################################
               # DEVELOPMENT

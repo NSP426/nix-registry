@@ -9,6 +9,7 @@
   environment.etc."haproxy/hosts.map".text = ''
     vault.drotek.com       vaultwarden
     registry.drotek.com    podman_zot
+    grafana.drotek.com    grafana
   '';
 
   services.haproxy = {
@@ -57,6 +58,9 @@
 
             backend vaultwarden
                 server app 127.0.0.1:8222 check
+
+            backend grafana
+                server app 127.0.0.1:3000 check
 
     '';
   };

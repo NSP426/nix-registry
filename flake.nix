@@ -43,7 +43,7 @@
           #          nur-packages.nixosModules.zot
           #          ./services/zot.nix
           ./haproxy.nix
-          ./supervision.nix
+          ./supervision/supervision.nix
 
           home-manager.nixosModules.home-manager
           {
@@ -371,6 +371,7 @@
               netcat
               nftables
               openssh
+              bmon
 
               ##########################################################
               # FILESYSTEM / DISK

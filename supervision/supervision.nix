@@ -29,6 +29,17 @@
           }
         ];
       }
+      {
+    job_name = "zot";
+
+    static_configs = [
+      {
+        targets = [ "localhost:5000" ];
+      }
+    ];
+
+    metrics_path = "/metrics";
+  }
     ];
   };
 

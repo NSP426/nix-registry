@@ -39,6 +39,12 @@
     "writeTimeout": "10m"
   },
   "extensions": {
+    "metrics": {
+      "enable": true,
+      "prometheus": {
+        "path": "/metrics"
+      }
+    },
     "sync": {
       "enable": true,
       "registries": [

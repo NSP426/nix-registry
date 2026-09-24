@@ -10,6 +10,7 @@
     vault.drotek.com       vaultwarden
     registry.drotek.com    podman_zot
     grafana.drotek.com    grafana
+    prometeus.drotek.com  prometeus
   '';
 
   services.haproxy = {
@@ -68,6 +69,10 @@
 
                   backend grafana
                       server app 127.0.0.1:3000
+
+                  backend prometeus
+                      server app 127.0.0.1:9090
+
 
     '';
   };

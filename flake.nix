@@ -361,6 +361,7 @@
               gnumake
               gettext
               git
+              git-lfs
 
               ncurses
               openssl

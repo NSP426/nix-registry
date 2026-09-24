@@ -44,6 +44,10 @@
           #          ./services/zot.nix
           ./haproxy.nix
           ./supervision/supervision.nix
+          ./zot/zot.nix
+          {
+            services.zot.enable = true;
+          }
 
           home-manager.nixosModules.home-manager
           {
@@ -360,6 +364,8 @@
 
               ncurses
               openssl
+
+              jq
 
               ##########################################################
               # NETWORK

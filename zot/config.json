@@ -1,0 +1,83 @@
+{
+  "storage": {
+    "rootDirectory": "/var/lib/zot",
+    "commit": true,
+    "dedupe": true,
+    "gcInterval": "24h",
+    "retention": {
+      "policies": [
+        {
+          "repositories": [
+            "username/**"
+          ],
+          "deleteUntagged": true,
+          "keepTags": [
+            {
+              "patterns": ".*"
+            }
+          ]
+        },
+        {
+          "repositories": [
+            "**"
+          ],
+          "deleteUntagged": true,
+          "keepTags": [
+            {
+              "pushedWithin": "24h",
+              "pulledWithin": "24h"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "http": {
+    "address": "127.0.0.1",
+    "port": "5000",
+    "readTimeout": "10m",
+    "writeTimeout": "10m"
+  },
+  "extensions": {
+    "sync": {
+      "enable": true,
+      "registries": [
+        {
+          "urls": [
+            "https://ghcr.io"
+          ],
+          "onDemand": true,
+          "tlsVerify": true,
+          "maxRetries": 3,
+          "retryDelay": "5m",
+          "content": [
+            {
+              "prefix": "**"
+            }
+          ]
+        },
+        {
+          "urls": [
+            "https://registry-1.docker.io"
+          ],
+          "onDemand": true,
+          "tlsVerify": true,
+          "maxRetries": 3,
+          "retryDelay": "5m"
+        }
+      ]
+    },
+    "search": {
+      "enable": true,
+      "cve": {
+        "updateInterval": "2h"
+      }
+    },
+    "ui": {
+      "enable": true
+    }
+  },
+  "log": {
+    "level": "info"
+  }
+}

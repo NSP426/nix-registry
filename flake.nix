@@ -10,7 +10,6 @@
     };
 
     sops-nix.url = "github:Mic92/sops-nix";
-    #    nur-packages.url = "github:ijohanne/nur-packages";
 
     netboot = {
       url = "path:./netboot";
@@ -40,8 +39,6 @@
         modules = [
           ./hardware-configuration.nix
           sops-nix.nixosModules.sops
-          #          nur-packages.nixosModules.zot
-          #          ./services/zot.nix
           ./haproxy.nix
           ./postgresql.nix
           ./supervision/supervision.nix
@@ -54,12 +51,9 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-
             home-manager.users.${username} = import ./home.nix;
-
-            # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
           }
-
+          #
           # netboot.nixosModules.netboot
           # {
           #   services.netboot = {
@@ -104,40 +98,14 @@
             # BOOT / KERNEL
             ############################################################
 
-            # À adapter à ton installation matérielle.
-            # Le bootloader et les filesystems doivent idéalement
-            # provenir du hardware-configuration.nix généré par NixOS.a
-
             boot.loader.systemd-boot.enable = true;
             boot.loader.efi.canTouchEfiVariables = true;
-
-            #boot.loader.grub = {
-            #  enable = true;
-            #  device = "/dev/vda";
-            #};
-
-            #boot.kernelModules = [
-            #"kvm-amd"
-            #];
-
-            ############################################################
-            # FIRMWARE
-            ############################################################
-
-            #hardware.enableRedistributableFirmware = true;
-            #hardware.graphics.enable32Bit = true;
-
-            # Équivalent fonctionnel de :
-            # amd64-microcode
-            #hardware.cpu.amd.updateMicrocode = true;
 
             ############################################################
             # NETWORK
             ############################################################
 
             networking.hostName = "cachos";
-            #networking.networkmanager.enable = true;
-
             networking.firewall.enable = false;
 
             networking.firewall.allowedTCPPorts = [
@@ -198,12 +166,6 @@
               xdgOpenUsePortal = true;
             };
 
-            # appimage
-            #programs.appimage = {
-            #  enable = true;
-            #  binfmt = true;
-            #};
-
             environment.sessionVariables = {
               QT_QPA_PLATFORM = "wayland";
               CLUTTER_BACKEND = "wayland";
@@ -228,21 +190,6 @@
             };
 
             services.gvfs.enable = true;
-
-            ############################################################
-            # AUDIO
-            ############################################################
-
-            #security.rtkit.enable = true;
-
-            #services.pipewire = {
-            #  enable = true;
-
-            #  alsa.enable = true;
-            #  alsa.support32Bit = true;
-            #  pulse.enable = true;
-            #  wireplumber.enable = true;
-            #};
 
             ############################################################
             # BLUETOOTH
@@ -402,82 +349,28 @@
               xz
               zstd
               cpio
-              cdrtools
+#              cdrtools
 
               ##########################################################
               # GTK / DESKTOP
               ##########################################################
 
-              gtk4
+#              gtk4
               wayland
               wayland-protocols
               libxkbcommon
               mesa
-              vulkan-loader
-
-              ##########################################################
-              # GAMING
-              ##########################################################
-
-              #lutris
-              #wine
-
-              ##########################################################
-              # VIRTUALISATION
-              ##########################################################
-
-              #virt-manager
-
-              ##########################################################
-              # USB / HARDWARE / EMBEDDED
-              ##########################################################
-
-              #flashrom
-              #minicom
+#              vulkan-loader
 
               ##########################################################
               # SECURITY / ADMIN
               ##########################################################
 
-              #borgbackup
               fail2ban
-
-              ##########################################################
-              # WEB / SERVER
-              ##########################################################
-
-              # nginx
-
-              ##########################################################
-              # MQTT
-              ##########################################################
-
-              #mosquitto
-
-              ##########################################################
-              # TERMINAL / TEXT
-              ##########################################################
 
               groff
               man
               man-pages
-
-              ##########################################################
-              # DEBUG / SYSTEM
-              ##########################################################
-
-              #dwarves
-              #strace
-
-              ##########################################################
-              # MISC
-              ##########################################################
-
-              # whiptail
-              #autofs5
-              #cifs-utils
-
-              vulkan-tools
 
               # nix style format
               nixfmt

@@ -50,13 +50,16 @@ in
       config = {
         DOMAIN = cfg.domain;
 
+        IP_HEADER = "X-Real-IP";
+        IP_HEADER_TRUSTED_PROXIES = "127.0.0.1";
+
         ROCKET_ADDRESS = "0.0.0.0";
         ROCKET_PORT = cfg.port;
 
-        #DATABASE_URL = "postgresql://vaultwarden@localhost/vaultwarden";
         DATABASE_URL = "postgresql:///vaultwarden?host=/run/postgresql";
 
         SIGNUPS_ALLOWED = false;
+        ADMIN_TOKEN = "toutbidon31290";
 
         WEBSOCKET_ENABLED = true;
       };

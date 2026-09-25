@@ -73,6 +73,10 @@
         }
       ]
     },
+    "scrub": {
+    "enable": true,
+    "interval": "24h"
+  },
     "search": {
       "enable": true,
       "cve": {

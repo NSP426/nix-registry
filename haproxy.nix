@@ -11,6 +11,7 @@
     registry.drotek.com    podman_zot
     grafana.drotek.com    grafana
     prometeus.drotek.com  prometeus
+    pgadmin.drotek.com  pgadmin
   '';
 
   services.haproxy = {
@@ -57,6 +58,9 @@
                       use_backend %[req.hdr(host),lower,map(/etc/haproxy/hosts.map)]
                       default_backend podman_zot
 
+                      http-request set-header X-Real-IP %[src]
+                      http-request set-header X-Forwarded-For %[src]
+
                       http-response set-header Strict-Transport-Security "max-age=63072000; includeSubDomains"
 
                   backend podman_zot
@@ -72,6 +76,9 @@
 
                   backend prometeus
                       server app 127.0.0.1:9090
+
+                  backend pgadmin
+                      server app 127.0.0.1:5050
 
 
     '';

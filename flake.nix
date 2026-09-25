@@ -43,6 +43,7 @@
           #          nur-packages.nixosModules.zot
           #          ./services/zot.nix
           ./haproxy.nix
+          ./postgresql.nix
           ./supervision/supervision.nix
           ./zot/zot.nix
           {
@@ -82,7 +83,7 @@
             services.vaultwarden-custom = {
               enable = true;
 
-              domain = "https://vault.example.com";
+              domain = "https://vault.drotek.com";
               port = 8222;
             };
 
@@ -487,6 +488,7 @@
 
               podman-tui
               podman-compose
+
             ];
 
             ############################################################

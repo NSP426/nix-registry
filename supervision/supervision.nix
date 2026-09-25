@@ -30,16 +30,16 @@
         ];
       }
       {
-    job_name = "zot";
+        job_name = "zot";
 
-    static_configs = [
-      {
-        targets = [ "localhost:5000" ];
+        static_configs = [
+          {
+            targets = [ "localhost:5000" ];
+          }
+        ];
+
+        metrics_path = "/metrics";
       }
-    ];
-
-    metrics_path = "/metrics";
-  }
     ];
   };
 
@@ -102,7 +102,7 @@
   services.postgresql = {
     enable = true;
 
-    package = pkgs.postgresql_16;
+    #    package = pkgs.postgresql_16;
 
     ensureDatabases = [
       "metrics"
